@@ -1,6 +1,6 @@
 {
-  "name": "chatbot",
-  "version": "1.0.0",
+  "name": "@mishrashardendu22/chatbot-widget",
+  "version": "0.1.6",
   "description": "This is a custom plug and play chat-bot widget.",
   "repository": {
     "type": "git",
