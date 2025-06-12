@@ -15,16 +15,20 @@ const OpenAIIcon = () => (
 
 const GeminiIcon = () => (
   <svg width="16" height="16" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#4285F4"/>
-      <stop offset="100%" stop-color="#A142F5"/>
-    </linearGradient>
-  </defs>
-  <path d="M256 0 L406 256 256 512 106 256 Z" fill="url(#g)"/>
-</svg>
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#4285F4"/>
+        <stop offset="100%" stopColor="#A142F5"/>
+      </linearGradient>
+    </defs>
+    <path d="M256 0 L406 256 256 512 106 256 Z" fill="url(#g)"/>
+  </svg>
+);
 
-
+const ChatIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
 );
 
 const BASE = "https://go-chatbot-backend.onrender.com";
@@ -38,16 +42,15 @@ const Chatbot: React.FC<ChatbotProps> = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    let stored = Math.random().toString(36).substr(2, 9);
+    const stored = Math.random().toString(36).substr(2, 9);
     setUserId(stored);
   }, []);
 
   useEffect(() => {
     if (!userId) return;
-    const key = `chat_history_${userId}`;
     const stored = history;
     setHistory(stored);
-  }, [userId]);
+  }, [userId, history]);
 
   const addToHistory = (sender: string, message: string) => {
     setHistory((h) => [...h, { sender, message }]);
@@ -95,52 +98,39 @@ const Chatbot: React.FC<ChatbotProps> = () => {
     }
   };
 
-  const styles = {
+  const styles: { [key: string]: React.CSSProperties } = {
     container: {
       position: 'fixed',
       bottom: '24px',
       right: '24px',
-      width: '380px',
-      height: isOpen ? '600px' : '64px',
+      width: isOpen ? '60vw' : '60px',
+      height: isOpen ? '80vh' : '60px',
+      minWidth: isOpen ? '500px' : '60px',
+      maxWidth: isOpen ? '800px' : '60px',
       backgroundColor: '#ffffff',
-      borderRadius: '20px',
-      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05)',
-      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+      borderRadius: '8px',
+      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       zIndex: 1000,
       overflow: 'hidden',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-      backdropFilter: 'blur(16px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)'
+      border: '1px solid #e5e7eb'
     },
     
     trigger: {
       width: '100%',
-      height: '64px',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      height: '100%',
+      background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
       border: 'none',
-      borderRadius: '20px',
+      borderRadius: '8px',
       color: 'white',
-      fontSize: '16px',
-      fontWeight: '600',
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0 24px',
-      transition: 'all 0.3s ease',
+      justifyContent: 'center',
+      transition: 'all 0.2s ease',
       position: 'relative',
       overflow: 'hidden'
-    },
-
-    triggerIcon: {
-      fontSize: '24px',
-      transition: 'transform 0.3s ease'
-    },
-
-    triggerText: {
-      fontSize: '16px',
-      fontWeight: '600',
-      letterSpacing: '-0.025em'
     },
 
     chatInterface: {
@@ -151,20 +141,34 @@ const Chatbot: React.FC<ChatbotProps> = () => {
     },
 
     header: {
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
       color: 'white',
       padding: '20px 24px',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+      borderBottom: '1px solid #374151',
+      minHeight: '70px'
+    },
+
+    headerLeft: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px'
     },
 
     title: {
-      fontSize: '18px',
+      fontSize: '20px',
       fontWeight: '700',
-      margin: 0,
+      margin: '0',
       letterSpacing: '-0.025em'
+    },
+
+    subtitle: {
+      fontSize: '14px',
+      color: '#9ca3af',
+      margin: '4px 0 0 0',
+      fontWeight: '400'
     },
 
     closeButton: {
@@ -174,30 +178,31 @@ const Chatbot: React.FC<ChatbotProps> = () => {
       fontSize: '20px',
       cursor: 'pointer',
       padding: '8px',
-      width: '32px',
-      height: '32px',
-      borderRadius: '50%',
+      width: '36px',
+      height: '36px',
+      borderRadius: '6px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       transition: 'all 0.2s ease',
-      backdropFilter: 'blur(10px)'
+      fontWeight: 'bold'
     },
 
     controls: {
       padding: '20px 24px',
-      borderBottom: '1px solid #f1f5f9',
-      background: 'linear-gradient(to right, #fafbfc, #f8fafc)'
+      borderBottom: '1px solid #e5e7eb',
+      background: '#f9fafb'
     },
 
     modeSelector: {
       display: 'flex',
-      gap: '12px',
+      gap: '8px',
       marginBottom: '16px',
       padding: '4px',
-      backgroundColor: 'rgba(255, 255, 255, 0.7)',
-      borderRadius: '12px',
-      border: '1px solid #e2e8f0'
+      backgroundColor: '#ffffff',
+      borderRadius: '8px',
+      border: '1px solid #d1d5db',
+      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
     },
 
     radioLabel: {
@@ -207,18 +212,19 @@ const Chatbot: React.FC<ChatbotProps> = () => {
       justifyContent: 'center',
       cursor: 'pointer',
       fontSize: '14px',
-      fontWeight: '500',
-      padding: '8px 16px',
-      borderRadius: '8px',
+      fontWeight: '600',
+      padding: '10px 16px',
+      borderRadius: '6px',
       transition: 'all 0.2s ease',
       backgroundColor: 'transparent',
-      color: '#64748b'
+      color: '#6b7280',
+      gap: '8px'
     },
 
     radioLabelActive: {
-      backgroundColor: '#667eea',
+      backgroundColor: '#3b82f6',
       color: 'white',
-      boxShadow: '0 2px 4px rgba(102, 126, 234, 0.2)'
+      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
     },
 
     radioInput: {
@@ -226,16 +232,16 @@ const Chatbot: React.FC<ChatbotProps> = () => {
     },
 
     clearButton: {
-      background: 'linear-gradient(135deg, #ff6b6b, #ee5a52)',
+      background: 'linear-gradient(135deg, #ef4444, #dc2626)',
       color: 'white',
       border: 'none',
-      padding: '10px 20px',
-      borderRadius: '10px',
+      padding: '12px 20px',
+      borderRadius: '6px',
       cursor: 'pointer',
       fontSize: '14px',
       fontWeight: '600',
       transition: 'all 0.2s ease',
-      boxShadow: '0 2px 8px rgba(238, 90, 82, 0.3)',
+      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
       width: '100%'
     },
 
@@ -243,63 +249,69 @@ const Chatbot: React.FC<ChatbotProps> = () => {
       flex: 1,
       padding: '24px',
       overflowY: 'auto',
-      background: 'linear-gradient(to bottom, #ffffff, #fafbfc)',
+      background: '#ffffff',
       position: 'relative'
     },
 
     messageContainer: {
-      marginBottom: '20px',
+      marginBottom: '24px',
       display: 'flex',
       flexDirection: 'column',
-      gap: '4px'
+      gap: '8px'
     },
 
     userMessage: {
       alignSelf: 'flex-end',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
       color: 'white',
-      padding: '12px 18px',
-      borderRadius: '20px 20px 4px 20px',
-      maxWidth: '85%',
+      padding: '14px 18px',
+      borderRadius: '8px',
+      maxWidth: '75%',
       fontSize: '14px',
       lineHeight: '1.5',
       wordWrap: 'break-word',
-      boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)',
+      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
       fontWeight: '500'
     },
 
     botMessageContainer: {
       alignSelf: 'flex-start',
-      maxWidth: '85%'
+      maxWidth: '85%',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px'
+    },
+
+    botHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
     },
 
     botLabel: {
       fontSize: '12px',
-      color: '#94a3b8',
-      marginBottom: '6px',
+      color: '#6b7280',
       fontWeight: '600',
       textTransform: 'uppercase',
       letterSpacing: '0.5px'
     },
 
     botMessage: {
-      background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-      color: '#334155',
-      padding: '12px 18px',
-      borderRadius: '20px 20px 20px 4px',
+      background: '#f3f4f6',
+      color: '#1f2937',
+      padding: '14px 18px',
+      borderRadius: '8px',
       fontSize: '14px',
-      lineHeight: '1.5',
+      lineHeight: '1.6',
       wordWrap: 'break-word',
-      border: '1px solid #e2e8f0',
-      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+      border: '1px solid #e5e7eb',
       fontWeight: '500'
     },
 
     inputContainer: {
       padding: '20px 24px',
-      borderTop: '1px solid #f1f5f9',
-      background: 'rgba(255, 255, 255, 0.9)',
-      backdropFilter: 'blur(10px)'
+      borderTop: '1px solid #e5e7eb',
+      background: '#ffffff'
     },
 
     inputWrapper: {
@@ -310,29 +322,30 @@ const Chatbot: React.FC<ChatbotProps> = () => {
 
     textInput: {
       flex: 1,
-      border: '2px solid #e2e8f0',
-      borderRadius: '16px',
-      padding: '12px 18px',
+      border: '2px solid #d1d5db',
+      borderRadius: '8px',
+      padding: '14px 16px',
       fontSize: '14px',
       outline: 'none',
       transition: 'all 0.2s ease',
-      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      backgroundColor: '#ffffff',
       fontWeight: '500',
-      color: '#334155'
+      color: '#1f2937',
+      minHeight: '20px'
     },
 
     sendButton: {
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
       color: 'white',
       border: 'none',
-      borderRadius: '16px',
-      padding: '12px 24px',
+      borderRadius: '8px',
+      padding: '14px 24px',
       cursor: 'pointer',
       fontSize: '14px',
       fontWeight: '600',
       transition: 'all 0.2s ease',
-      boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)',
-      whiteSpace: 'nowrap'
+      whiteSpace: 'nowrap',
+      minHeight: '48px'
     },
 
     status: {
@@ -340,27 +353,26 @@ const Chatbot: React.FC<ChatbotProps> = () => {
       fontSize: '12px',
       marginBottom: '12px',
       textAlign: 'center',
-      fontWeight: '500'
+      fontWeight: '500',
+      padding: '8px',
+      backgroundColor: '#fef2f2',
+      borderRadius: '6px',
+      border: '1px solid #fecaca'
     },
 
     emptyState: {
       textAlign: 'center',
-      color: '#94a3b8',
-      fontSize: '14px',
+      color: '#9ca3af',
+      fontSize: '16px',
       marginTop: '60px',
       fontWeight: '500',
       lineHeight: '1.6'
     },
 
-    gradient: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1))',
-      opacity: 0,
-      transition: 'opacity 0.3s ease'
+    emptyStateIcon: {
+      fontSize: '48px',
+      marginBottom: '16px',
+      opacity: 0.5
     }
   };
 
@@ -371,28 +383,35 @@ const Chatbot: React.FC<ChatbotProps> = () => {
           style={styles.trigger}
           onClick={() => setIsOpen(true)}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'scale(1.02)';
-            e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(102, 126, 234, 0.4)';
+            e.currentTarget.style.transform = 'scale(1.05)';
+            e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(59, 130, 246, 0.4)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)';
-            e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)';
+            e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1)';
           }}
         >
-          <div style={styles.gradient}></div>
-          <span style={styles.triggerText}>AI Assistant</span>
-          <span style={styles.triggerIcon}>✨</span>
+          <ChatIcon />
         </button>
       )}
 
       <div style={styles.chatInterface}>
         <div style={styles.header}>
-          <h2 style={styles.title}>AI Assistant</h2>
+          <div style={styles.headerLeft}>
+            <div>
+              <h2 style={styles.title}>AI Assistant</h2>
+              <p style={styles.subtitle}>Powered by {mode === "deepseek" ? "OpenAI" : "Gemini"}</p>
+            </div>
+          </div>
           <button 
             style={styles.closeButton}
             onClick={() => setIsOpen(false)}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            }}
           >
             ×
           </button>
@@ -413,7 +432,7 @@ const Chatbot: React.FC<ChatbotProps> = () => {
                 onChange={() => setMode("deepseek")}
               />
               <OpenAIIcon />
-              <span style={{ marginLeft: '8px' }}>OpenAI</span>
+              <span>OpenAI</span>
             </label>
             <label style={{
               ...styles.radioLabel,
@@ -428,24 +447,34 @@ const Chatbot: React.FC<ChatbotProps> = () => {
                 onChange={() => setMode("gemini")}
               />
               <GeminiIcon />
-              <span style={{ marginLeft: '8px' }}>Gemini</span>
+              <span>Gemini</span>
             </label>
           </div>
           <button 
             style={styles.clearButton}
             onClick={handleClear}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-1px)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = '0 4px 8px 0 rgba(239, 68, 68, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
+            }}
           >
-            Clear Chat
+            Clear Chat History
           </button>
         </div>
 
         <div style={styles.chatContainer}>
           {history.length === 0 && (
             <div style={styles.emptyState}>
-              👋 Welcome! Start a conversation<br/>
-              with your AI assistant
+              <div style={styles.emptyStateIcon}>💬</div>
+              <strong>Welcome to AI Assistant</strong><br/>
+              Choose your preferred AI model above and start chatting!<br/>
+              <small style={{ color: '#d1d5db', marginTop: '8px', display: 'block' }}>
+                Your conversations are private and secure
+              </small>
             </div>
           )}
           {history.map((item, idx) => (
@@ -456,7 +485,10 @@ const Chatbot: React.FC<ChatbotProps> = () => {
                 </div>
               ) : (
                 <div style={styles.botMessageContainer}>
-                  <div style={styles.botLabel}>{item.sender}</div>
+                  <div style={styles.botHeader}>
+                    {mode === "deepseek" ? <OpenAIIcon /> : <GeminiIcon />}
+                    <div style={styles.botLabel}>{item.sender}</div>
+                  </div>
                   <div style={styles.botMessage}>
                     {item.message}
                   </div>
@@ -477,23 +509,31 @@ const Chatbot: React.FC<ChatbotProps> = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter") handleSend(); }}
-              placeholder="Type your message..."
+              placeholder="Type your message here..."
               onFocus={(e) => {
-                e.target.style.borderColor = '#667eea';
-                e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+                e.currentTarget.style.borderColor = '#3b82f6';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = '#e2e8f0';
-                e.target.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = '#d1d5db';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             />
             <button 
               style={styles.sendButton}
               onClick={handleSend}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-1px)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              disabled={!input.trim()}
+              onMouseEnter={(e) => {
+                if (!input.trim()) return;
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.boxShadow = '0 4px 8px 0 rgba(16, 185, 129, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
             >
-              Send
+              Send Message
             </button>
           </div>
         </div>
