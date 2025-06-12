@@ -31,6 +31,13 @@ const ChatIcon = () => (
   </svg>
 );
 
+const TrashIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="3,6 5,6 21,6"></polyline>
+    <path d="m19,6v14a2,2 0 0,1-2,2H7a2,2 0 0,1-2-2V6m3,0V4a2,2 0 0,1,2-2h4a2,2 0 0,1,2,2v2"></path>
+  </svg>
+);
+
 const BASE = "https://go-chatbot-backend.onrender.com";
 
 const Chatbot: React.FC<ChatbotProps> = () => {
@@ -104,7 +111,7 @@ const Chatbot: React.FC<ChatbotProps> = () => {
       bottom: '24px',
       right: '24px',
       width: isOpen ? '60vw' : '60px',
-      height: isOpen ? '80vh' : '60px',
+      height: isOpen ? '90vh' : '60px',
       minWidth: isOpen ? '500px' : '60px',
       maxWidth: isOpen ? '800px' : '60px',
       backgroundColor: '#ffffff',
@@ -120,7 +127,7 @@ const Chatbot: React.FC<ChatbotProps> = () => {
     trigger: {
       width: '100%',
       height: '100%',
-      background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+      background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
       border: 'none',
       borderRadius: '8px',
       color: 'white',
@@ -191,18 +198,21 @@ const Chatbot: React.FC<ChatbotProps> = () => {
     controls: {
       padding: '20px 24px',
       borderBottom: '1px solid #e5e7eb',
-      background: '#f9fafb'
+      background: '#f9fafb',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px'
     },
 
     modeSelector: {
       display: 'flex',
       gap: '8px',
-      marginBottom: '16px',
       padding: '4px',
       backgroundColor: '#ffffff',
       borderRadius: '8px',
       border: '1px solid #d1d5db',
-      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+      flex: 1
     },
 
     radioLabel: {
@@ -222,7 +232,7 @@ const Chatbot: React.FC<ChatbotProps> = () => {
     },
 
     radioLabelActive: {
-      backgroundColor: '#3b82f6',
+      backgroundColor: '#1f2937',
       color: 'white',
       boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
     },
@@ -232,17 +242,20 @@ const Chatbot: React.FC<ChatbotProps> = () => {
     },
 
     clearButton: {
-      background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+      background: '#ef4444',
       color: 'white',
       border: 'none',
-      padding: '12px 20px',
+      padding: '8px 12px',
       borderRadius: '6px',
       cursor: 'pointer',
-      fontSize: '14px',
+      fontSize: '12px',
       fontWeight: '600',
       transition: 'all 0.2s ease',
       boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-      width: '100%'
+      display: 'flex',
+      alignItems: 'center',
+      gap: '6px',
+      whiteSpace: 'nowrap'
     },
 
     chatContainer: {
@@ -262,7 +275,7 @@ const Chatbot: React.FC<ChatbotProps> = () => {
 
     userMessage: {
       alignSelf: 'flex-end',
-      background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+      background: '#1f2937',
       color: 'white',
       padding: '14px 18px',
       borderRadius: '8px',
@@ -384,7 +397,7 @@ const Chatbot: React.FC<ChatbotProps> = () => {
           onClick={() => setIsOpen(true)}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.05)';
-            e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(59, 130, 246, 0.4)';
+            e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(31, 41, 55, 0.4)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)';
@@ -462,7 +475,8 @@ const Chatbot: React.FC<ChatbotProps> = () => {
               e.currentTarget.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
             }}
           >
-            Clear Chat History
+            <TrashIcon />
+            Clear
           </button>
         </div>
 
@@ -511,8 +525,8 @@ const Chatbot: React.FC<ChatbotProps> = () => {
               onKeyDown={(e) => { if (e.key === "Enter") handleSend(); }}
               placeholder="Type your message here..."
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = '#3b82f6';
-                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+                e.currentTarget.style.borderColor = '#1f2937';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(31, 41, 55, 0.1)';
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = '#d1d5db';
